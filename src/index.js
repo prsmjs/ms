@@ -28,10 +28,14 @@ function isValid(input) {
 }
 
 /**
- * @param {string|number} msString - time expression like "1h 30m" or a number
- * @param {string|number|{unit?: string, round?: boolean}} [defaultOrOptions] - default value or options
- * @param {{unit?: string, round?: boolean}} [options]
- * @returns {number}
+ * Parse a time expression into a number, optionally converting to a different unit.
+ *
+ * @param {string|number} msString - The value to parse. A string holds one or more value-unit pairs such as "1h 30m 15s" (case insensitive, supports all common unit aliases). A number is treated as a count of milliseconds. Invalid input falls back to the default value.
+ * @param {string|number|{unit?: string, round?: boolean}} [defaultOrOptions] - Either a fallback value used when msString is invalid, or the options object. As a fallback it accepts a number of milliseconds or a time string like "5m" (default `0`). If an options object is passed here, it is used as the options and the default becomes `0`.
+ * @param {{unit?: string, round?: boolean}} [options] - Parsing options.
+ * @param {string} [options.unit] - The unit to express the result in, using any supported unit alias such as "ms", "s", "m", "h", "d", or "w" (default `"ms"`). An unrecognized unit yields `0`.
+ * @param {boolean} [options.round] - Whether to round the result to the nearest integer (default `true`). Set to `false` to keep fractional values.
+ * @returns {number} The parsed duration expressed in the requested unit.
  */
 function ms(msString, defaultOrOptions = {}, options = {}) {
   if (defaultOrOptions && typeof defaultOrOptions === "object") {
